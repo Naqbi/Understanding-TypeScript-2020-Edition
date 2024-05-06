@@ -1,21 +1,12 @@
-function combine(input1, input2, resConv) {
-    var res;
-    if (typeof input1 == 'number' && typeof input2 == 'number' || resConv === 'as-number') {
-        res = +input1 + +input2;
-    }
-    else {
-        res = input1.toString() + input2.toString();
-    }
-    return res;
-    //if (resConv === 'as-number') {
-    //  return +res; 
-    //} else {
-    //  return res.toString();
-    //}
+function add(n1, n2) {
+    return n1 + n2;
 }
-var combineAges = combine(30, 26, 'as-number');
-console.log(combineAges);
-var combineStringAges = combine('30', '26', 'as-number');
-console.log(combineStringAges);
-var combinedNames = combine('Max', 'Ann', 'as-text');
-console.log(combinedNames);
+function printRes(num) {
+    console.log('Result: ' + num);
+}
+printRes(add(5, 12));
+var combineValues;
+combineValues = add;
+combineValues = printRes;
+//combineValues = 5;
+console.log(combineValues(8, 8));

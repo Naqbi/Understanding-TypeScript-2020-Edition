@@ -1,25 +1,20 @@
-function combine(input1: number | string, input2: number | string, resConv: 'as-number' | 'as-text') {
-  let res;
-  if (typeof input1 == 'number' && typeof input2 == 'number' || resConv === 'as-number' ) {
-    res = +input1 + +input2;
-  } else {
-    res = input1.toString() + input2.toString();
-  }
-
-  return res;
-
-  //if (resConv === 'as-number') {
-  //  return +res; 
-  //} else {
-  //  return res.toString();
-  //}
+function add(n1: number, n2: number): number {
+	return n1 + n2;
+}
+function printRes(num:number): void {
+  console.log('Result: ' + num);
 }
 
-const combineAges = combine(30, 26, 'as-number');
-console.log(combineAges);
+function addAndHandle(n1: number, n2: number, cb) {
+	const res = n1 + n2;
+	cb(res);
+}
+printRes(add(5, 12));
 
-const combineStringAges = combine('30', '26', 'as-number');
-console.log(combineStringAges);
+let combineValues: (a: number, b: number) => number;
 
-const combinedNames = combine('Max', 'Ann', 'as-text');
-console.log(combinedNames);
+combineValues = add;
+//combineValues = printRes;
+//combineValues = 5;
+
+console.log(combineValues(8, 8));
