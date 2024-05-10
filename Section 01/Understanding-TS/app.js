@@ -1,12 +1,12 @@
-function add(n1, n2) {
-    return n1 + n2;
+"use strict";
+let userInput;
+let userName;
+userInput = 5;
+userInput = 'Ahmed';
+if (typeof userInput === 'string') {
+    userName = userName;
 }
-function printRes(num) {
-    console.log('Result: ' + num);
+function generateError(message, code) {
+    throw { message: message, errorCode: code };
 }
-printRes(add(5, 12));
-var combineValues;
-combineValues = add;
-combineValues = printRes;
-//combineValues = 5;
-console.log(combineValues(8, 8));
+generateError('An error occurred', 500);

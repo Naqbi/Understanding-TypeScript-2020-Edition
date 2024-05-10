@@ -1,20 +1,12 @@
-function add(n1: number, n2: number): number {
-	return n1 + n2;
+let userInput: unknown;
+let userName: string;
+
+userInput = 5;
+userInput = 'Ahmed';
+if (typeof userInput === 'string') {
+  userName = userName;
 }
-function printRes(num:number): void {
-  console.log('Result: ' + num);
+function generateError(message: string, code: number): never {
+  throw { message: message, errorCode: code };
 }
-
-function addAndHandle(n1: number, n2: number, cb) {
-	const res = n1 + n2;
-	cb(res);
-}
-printRes(add(5, 12));
-
-let combineValues: (a: number, b: number) => number;
-
-combineValues = add;
-//combineValues = printRes;
-//combineValues = 5;
-
-console.log(combineValues(8, 8));
+generateError('An error occurred', 500);
