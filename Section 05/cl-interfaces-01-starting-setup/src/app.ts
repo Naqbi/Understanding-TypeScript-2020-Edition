@@ -7,7 +7,7 @@ class Department {
     }
 
     describe(this: Department) {
-        console.log(`Department ${this.id}: ${this.name}`);
+        console.log(`Department (${this.id}): ${this.name}`);
     }
 
     addEmloyee(employee: string) {
@@ -20,15 +20,45 @@ class Department {
     }
 }
 
-const accounting = new Department('a1','Accounting');
+class ITDepartment extends Department {
+    constructor(id: string, public admins: string[]) {
+        super(id, 'IT');
+    }
+}
 
-accounting.addEmloyee('Ahmed');
-accounting.addEmloyee('Ali');
+
+class AccountingDepartment extends Department {
+    constructor(id: string, private reports: string[]) {
+        super(id, 'Accounting');
+    }
+
+
+    addReport(text: string) {
+        this.reports.push(text);
+    }
+
+    printReport() {
+        console.log(this.reports);
+        
+    }
+}
+const it = new ITDepartment('a1',['Yaser']);
+
+it.addEmloyee('Ahmed');
+it.addEmloyee('Ali');
 
 //accounting.empolyees[2] = 'Hassan';
 
-accounting.describe();
-accounting.printEmployeeInformation();
+it.describe();
+it.printEmployeeInformation();
+
+console.log(it);
+
+
+const accounting = new AccountingDepartment('a2', []);
+accounting.addReport('Something went wrong...');
+accounting.printReport();
+console.log(accounting);
 
 // const copyAccounting = { name: 'Digital', describe: accounting.describe };
 
