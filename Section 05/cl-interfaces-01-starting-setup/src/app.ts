@@ -26,11 +26,11 @@ class ITDepartment extends Department {
     }
 }
 
+
 class AccountingDepartment extends Department {
     constructor(id: string, private reports: string[]) {
         super(id, 'Accounting');
     }
-
 
     addReport(text: string) {
         this.reports.push(text);
