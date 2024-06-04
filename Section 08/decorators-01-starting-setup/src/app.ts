@@ -92,3 +92,37 @@ class Product {
     this._price * (1 + tax);
   }
 }
+
+
+const p1 = new Product('Book', 19);
+const p2 = new Product('Book 2', 29);
+
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+    const original = descriptor.value;
+    const adjust: PropertyDescriptor = {
+        configurable: true,
+        enumerable: false,
+        get() {
+            const boundFunc = original.bind(this);
+            return boundFunc;
+        }
+    };
+
+    return adjust;
+
+}
+
+class Printer {
+    message = 'This works!';
+
+    @Autobind
+    showMessage() {
+        console.log(this.message);
+        
+    }
+}
+
+const prnt = new Printer();
+
+const btn = document.querySelector('button');
+btn?.addEventListener('click', prnt.showMessage);
