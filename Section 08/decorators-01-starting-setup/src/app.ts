@@ -126,3 +126,47 @@ const prnt = new Printer();
 
 const btn = document.querySelector('button');
 btn?.addEventListener('click', prnt.showMessage);
+
+// ---
+
+function Required() {
+
+}
+
+function PositiveNum() {}
+
+function validate(obj: object) {}
+
+class Course {
+    @Required
+    title: string;
+
+    @PositiveNum
+    price: number;
+
+    constructor(t: string, p: number) {
+        this.title = t;
+        this.price = p;
+    }
+}
+
+const courseForm = document.querySelector('form');
+courseForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const titleElement = document.getElementById('title') as HTMLInputElement;
+    const priceElement = document.getElementById('price') as HTMLInputElement;
+
+    const title = titleElement.value;
+    const price = +priceElement.value;
+
+    const createdCourse = new Course(title, price);
+
+    if (!validate(createdCourse)) {
+        alert('');
+        return;
+    }
+
+    console.log(createdCourse);
+    
+}
+)
