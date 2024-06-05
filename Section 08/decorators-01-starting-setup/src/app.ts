@@ -8,7 +8,9 @@ function Logger(logString: string) {
 
 function WithTemplate(template: string, hookId: string) {
   console.log("Template Factory");
-  return function<T extends { new(...args: any[]): {name: string}}>(originalConstructor: T) {
+  return function <T extends { new (...args: any[]): { name: string } }>(
+    originalConstructor: T
+  ) {
     return class extends originalConstructor {
       constructor(..._: any[]) {
         super();
@@ -93,80 +95,114 @@ class Product {
   }
 }
 
-
-const p1 = new Product('Book', 19);
-const p2 = new Product('Book 2', 29);
+const p1 = new Product("Book", 19);
+const p2 = new Product("Book 2", 29);
 
 function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
-    const original = descriptor.value;
-    const adjust: PropertyDescriptor = {
-        configurable: true,
-        enumerable: false,
-        get() {
-            const boundFunc = original.bind(this);
-            return boundFunc;
-        }
-    };
+  const original = descriptor.value;
+  const adjust: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      const boundFunc = original.bind(this);
+      return boundFunc;
+    },
+  };
 
-    return adjust;
-
+  return adjust;
 }
 
 class Printer {
-    message = 'This works!';
+  message = "This works!";
 
-    @Autobind
-    showMessage() {
-        console.log(this.message);
-        
-    }
+  @Autobind
+  showMessage() {
+    console.log(this.message);
+  }
 }
 
 const prnt = new Printer();
 
-const btn = document.querySelector('button');
-btn?.addEventListener('click', prnt.showMessage);
+const btn = document.querySelector("button");
+btn?.addEventListener("click", prnt.showMessage);
 
 // ---
 
-function Required() {
-
+interface ValidatorConfig {
+  [property: string]: {
+    [validatableProp: string]: string[] // ['required', 'positive']
+  }
 }
 
-function PositiveNum() {}
+const registeredValidators: ValidatorConfig = {};
 
-function validate(obj: object) {}
+function Required(target: any, name: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [name]: ['required']
+  };
+}
+
+function PositiveNum(target: any, name: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [name]: ['positive']
+  };
+}
+
+function validate(obj: any) {
+  const objValidatorConfig = registeredValidators[obj.constructor.name];
+
+  if (!objValidatorConfig) {
+    return true;
+  }
+
+  let isValid = true;
+  for (const prop in objValidatorConfig) {
+    console.log(prop)
+    for (const valiator of objValidatorConfig[prop]) {
+      switch (valiator) {
+        case "required":
+          isValid = isValid && !!obj[prop];
+          break;
+        case "positive":
+          isValid = isValid && obj[prop] > 0;
+          break;
+      }
+    }
+  }
+
+  return isValid;
+}
 
 class Course {
-    @Required
-    title: string;
+  @Required
+  title: string;
 
-    @PositiveNum
-    price: number;
+  @PositiveNum
+  price: number;
 
-    constructor(t: string, p: number) {
-        this.title = t;
-        this.price = p;
-    }
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
 }
 
-const courseForm = document.querySelector('form');
-courseForm?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const titleElement = document.getElementById('title') as HTMLInputElement;
-    const priceElement = document.getElementById('price') as HTMLInputElement;
+const courseForm = document.querySelector("form");
+courseForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const titleElement = document.getElementById("title") as HTMLInputElement;
+  const priceElement = document.getElementById("price") as HTMLInputElement;
 
-    const title = titleElement.value;
-    const price = +priceElement.value;
+  const title = titleElement.value;
+  const price = +priceElement.value;
 
-    const createdCourse = new Course(title, price);
+  const createdCourse = new Course(title, price);
 
-    if (!validate(createdCourse)) {
-        alert('');
-        return;
-    }
+  if (!validate(createdCourse)) {
+    alert("Invalid input, please try again!");
+    return;
+  }
 
-    console.log(createdCourse);
-    
-}
-)
+  console.log(createdCourse);
+});
