@@ -1,3 +1,17 @@
+// Validation
+interface Validatable {
+  value: string | number;
+  required: boolean;
+  minLength: number;
+  maxLength: number;
+  min: number;
+  max: number;
+};
+
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+}
+
 function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
   const adjustedDescriptor: PropertyDescriptor = {
@@ -50,29 +64,32 @@ class ProjectInput {
     const enteredDescription = this.descriptionHtmlElement.value;
     const enteredPeople = this.peopleHtmlElement.value;
 
-    if(enteredTitle.trim().length === 0 || enteredDescription.trim().length === 0 || enteredPeople.trim().length === 0) {
-      alert('Invalid input, please try again!');
-    }
-    else {
-      return[enteredTitle, enteredDescription, +enteredPeople];
+    if (
+      validate({ value: enteredTitle, required: true, minLength: 5 }) &&
+      Validate({ value: enteredDescription, required: true, minLength: 5 }) &&
+      validate({ value: enteredPeople, required: true, minLength: 5 })
+    ) {
+      alert("Invalid input, please try again!");
+    } else {
+      return [enteredTitle, enteredDescription, +enteredPeople];
     }
   }
 
   private clearInputs() {
-    this.titleHtmlElement.value = '';
-    this.descriptionHtmlElement.value = '';
-    this.peopleHtmlElement.value = '';
+    this.titleHtmlElement.value = "";
+    this.descriptionHtmlElement.value = "";
+    this.peopleHtmlElement.value = "";
   }
 
   @autobind
   private submitHandler(event: Event) {
     event.preventDefault();
     const userInput = this.getUserInput();
-    if(Array.isArray(userInput)) {
+    if (Array.isArray(userInput)) {
       const [title, description, people] = userInput;
       console.log(title, description, people);
     }
-    this.clearInputs()
+    this.clearInputs();
   }
 
   private configure() {
