@@ -1,6 +1,14 @@
-function autobind(target: any, methodName: string, descriptor: PropertyDescriptor) {
+function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
-  const adjDescriptor = {};
+  const adjustedDescriptor: PropertyDescriptor = {
+    configurable: true,
+    get() {
+      const boundFunction = originalMethod.bind(this);
+      return boundFunction;
+    },
+  };
+
+  return adjustedDescriptor;
 }
 
 class ProjectInput {
@@ -46,7 +54,7 @@ class ProjectInput {
   }
 
   private configure() {
-    this.element.addEventListener("submit", this.submitHandler.bind(this));
+    this.element.addEventListener("submit", this.submitHandler);
   }
 
   private attach() {
